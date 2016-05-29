@@ -1,5 +1,10 @@
 Revision history for Data-Sah-Util-Subschema
 
+0.002   2016-05-29 (PERLANCAR)
+
+        - [dist] Forgot to declare dependency on Data::Sah 0.79.
+
+
 0.001   2016-05-29 (PERLANCAR)
 
         - First release.
