@@ -8,6 +8,7 @@ use strict;
 use warnings;
 
 use Data::Sah::Normalize qw(normalize_schema);
+use Data::Sah::Resolve   qw(resolve_schema);
 
 use Exporter qw(import);
 our @EXPORT_OK = qw(extract_subschemas);
@@ -22,13 +23,17 @@ sub extract_subschemas {
         $sch = normalize_schema($sch);
     }
 
-    my $typeclass = "Data::Sah::Type::$sch->[0]";
+    my $res = resolve_schema(
+        {schema_is_normalized => 1},
+        $sch);
+
+    my $typeclass = "Data::Sah::Type::$res->[0]";
     (my $typeclass_pm = "$typeclass.pm") =~ s!::!/!g;
     require $typeclass_pm;
 
     # XXX handle def and/or resolve schema into builtin types. for now we only
     # have one clause set because we don't handle those.
-    my @clsets = ($sch->[1]);
+    my @clsets = @{ $res->[1] };
 
     my @res;
     for my $clset (@clsets) {
