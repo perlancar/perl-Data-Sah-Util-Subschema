@@ -18,6 +18,9 @@ my %clausemeta_cache; # key = TYPE.CLAUSE
 sub extract_subschemas {
     my $opts = ref($_[0]) eq 'HASH' ? shift : {};
     my $sch = shift;
+    my $seen = shift // {};
+
+    $seen->{"$sch"}++ and return ();
 
     unless ($opts->{schema_is_normalized}) {
         $sch = normalize_schema($sch);
@@ -57,7 +60,7 @@ sub extract_subschemas {
             for my $clvalue (@clvalues) {
                 my @subsch = $clmeta->{subschema}->($clvalue);
                 push @res, @subsch;
-                push @res, map { extract_subschemas($opts, $_) } @subsch;
+                push @res, map { extract_subschemas($opts, $_, $seen) } @subsch;
             }
         }
     }
