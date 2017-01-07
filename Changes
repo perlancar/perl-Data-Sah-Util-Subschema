@@ -1,5 +1,3 @@
-Revision history for Data-Sah-Util-Subschema
-
 0.004   2016-07-25 (PERLANCAR)
 
 	- Avoid deep recursion when given recursive schema.
