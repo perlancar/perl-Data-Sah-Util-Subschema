@@ -1,6 +1,8 @@
 package Data::Sah::Util::Subschema;
 
+# AUTHORITY
 # DATE
+# DIST
 # VERSION
 
 use 5.010001;
@@ -30,13 +32,13 @@ sub extract_subschemas {
         {schema_is_normalized => 1},
         $sch);
 
-    my $typeclass = "Data::Sah::Type::$res->[0]";
+    my $typeclass = "Data::Sah::Type::$res->{type}";
     (my $typeclass_pm = "$typeclass.pm") =~ s!::!/!g;
     require $typeclass_pm;
 
     # XXX handle def and/or resolve schema into builtin types. for now we only
     # have one clause set because we don't handle those.
-    my @clsets = @{ $res->[1] };
+    my @clsets = @{ $res->{'clsets_after_type.alt.merge.merged'} };
 
     my @res;
     for my $clset (@clsets) {
